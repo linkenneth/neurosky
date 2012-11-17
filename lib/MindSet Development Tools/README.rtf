@@ -1,0 +1,66 @@
+MindSet Developer Tools
+Readme.txt
+
+The MindSet Development Tools are a set of software tools that make it easy to 
+create innovative applications that can respond to a user's brainwaves and mental state.
+
+If you already have a MindSet, you will be able to take full advantage of it through 
+our Developer Tools. If you are trying out the developer tools before purchasing a MindSet, 
+check out the tools and if you have any questions, let us know at support@neurosky.com.
+
+How can I use the MindSet Development Tools?
+The MindSet Development Tools contain a number of ways for developers to integrate 
+brainwave-sensing functionality into existing programs, or to create new ones from 
+scratch.
+
+What is included in the MindSet Developer Tools?
+There are three APIs: ThinkGear Communications Driver, ThinkGear Connector, and the 
+MindSet Communications Protocol. One of these different implementations should provide 
+the most appropriate level of access for your project. 
+
+For the newest information, tutorials, and more, please visit: http://developer.neurosky.com
+
+
+ThinkGear Communications Driver
+- Ideal for C / C++ / C# / Objective-C
+- Windows and OS X shared libraries (<code>.dll</code> and <code>.bundle</code>) 
+- Easy-to-use API
+   
+The ThinkGear Communications Driver (TGCD) is a native Windows and OS X library that 
+handles all the "heavy lifting" of interacting with a MindSet, from setting up the 
+connection to interpreting the data stream received from the MindSet. The API exposed 
+by TGCD is extremely simple.
+
+TGCD is distributed as a .dll (for Windows) and a .bundle (for OS X), making it 
+suitable for applications written in C or C derivatives (i.e. C++, C#, or Objective-C).
+
+
+ThinkGear Connector
+- Ideal for scripting languages like Flash / Python / Ruby
+- Windows and OS X executables
+- Uses socket APIs
+- Headset-less development mode
+
+The ThinkGear Connector (TGC) is a software program - analogous to a socket server - 
+that runs as a background process on your computer and is responsible for directing 
+MindSet data from the serial port to an open network socket. It is available on both 
+Windows and OS X. Any language or framework that contains a socket library should be 
+able to communicate with it. TGC is an ideal option for developers working in frameworks 
+like Adobe Flash.
+
+TGC also contains a "Headset-less mode" of operation, enabling developers without 
+MindSets to get a head-start on integrating brainwave-sensing capabilities into 
+their applications.
+
+
+MindSet Communications Protocol
+- Ideal for microcontroller projects, e.g., Arduino-based kits
+- Allows for development on platforms with Bluetooth SPP access
+- ANSI C source code for a full parser
+
+For developers who want to integrate MindSet functionality in an embedded environment 
+or for those developers who want to delve into the inner workings of the data stream 
+transmitted by the MindSet, the MDT includes full documentation of the MindSet's 
+communications protocol, as well as the ANSI C source code for an implementation of 
+its packet parser. Developers can drop this source code into their projects without 
+having to worry about their compilation environments.
