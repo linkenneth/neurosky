@@ -10,15 +10,19 @@ void printBlinks( unsigned char extendedCodeLevel,
         switch ( code ) {
             case ( 0x16 ):
                 printf( "BLINK: %d\n", value[0] & 0xFF );
+                fflush(stdout);
                 break;
             case ( 0x04 ):
                 printf( "ATTENTION: %d\n", value[0] & 0xFF );
+                fflush(stdout);
                 break;
             case ( 0x02 ):
                 printf( "POOR_SIGNAL: %d\n", value[0] & 0xFF );
+                fflush(stdout);
                 break;
             case ( 0x80 ):
                 printf( "RAW: %d\n", (short) (( value[0] << 8 ) | value[1]) );
+                fflush(stdout);
                 break;
             default:
                 break;
