@@ -8,12 +8,17 @@ void printBlinks( unsigned char extendedCodeLevel,
                   void *customData ) {
     if ( extendedCodeLevel == 0 ) {
         switch ( code ) {
-            /* Blink Strength event (0-255) */
             case ( 0x16 ):
-                printf( "Blink Strength: %d\n", value[0] & 0xFF );
+                printf( "BLINK: %d\n", value[0] & 0xFF );
                 break;
             case ( 0x04 ):
-                printf( "Attention level: %d\n", value[0] & 0xFF );
+                printf( "ATTENTION: %d\n", value[0] & 0xFF );
+                break;
+            case ( 0x02 ):
+                printf( "POOR_SIGNAL: %d\n", value[0] & 0xFF );
+                break;
+            case ( 0x80 ):
+                printf( "RAW: %d\n", (short) (( value[0] << 8 ) | value[1]) );
                 break;
             default:
                 break;
@@ -24,7 +29,7 @@ void printBlinks( unsigned char extendedCodeLevel,
 int main( int argc, char **argv ) {
     ThinkGearStreamParser parser;
     THINKGEAR_initParser( &parser, PARSER_TYPE_PACKETS,
-                          printBlinks, NULL );
+            printBlinks, NULL );
     FILE *stream = fopen( "/dev/tty.MindSet-DevB", "r" );
 
     unsigned char streamByte;
