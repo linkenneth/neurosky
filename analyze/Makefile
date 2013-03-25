@@ -1,5 +1,7 @@
+CC= cc
+CFLAGS= -std=gnu99
 .PHONY: default
 
 default:
-    cc *.c -o analyze.o
+	$(CC) $(CFLAGS) *.c -o analyze.out
 
