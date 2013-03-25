@@ -2,7 +2,7 @@ import time
 import subprocess
 import re
 
-proc = subprocess.Popen("./analyze.o", shell=True, stdout=subprocess.PIPE)
+proc = subprocess.Popen("./analyze.out", shell=True, stdout=subprocess.PIPE)
 
 poor = True
 i = 0
@@ -29,3 +29,32 @@ while True:
             continue
         else:
             print line
+
+def processBlink (accuracy, THR):
+""""processBlink 
+        input: int accuracy how many sample to use for detection
+               THR - threshold for triggering a detection
+        output: process, pass the samples to this function"""
+    SSIZE = accuracy
+    i = 0
+    accum = 0
+    def process (sample):
+        """processoutput: 1 - detected blink
+                          0 - need more samples doesnt know yet
+                         -1 - detected no blinks"""
+        nonlocal SSIZE, accum, i
+        if (i != SSIZE):
+           accum += sample
+           return 0
+        else:
+           i = 0
+           if (accum/sample > THR):
+               return 1
+           else:
+               return -1
+    return process
+
+
+        
+    
+

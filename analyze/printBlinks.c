@@ -33,7 +33,7 @@ void printBlinks( unsigned char extendedCodeLevel,
 int main( int argc, char **argv ) {
     ThinkGearStreamParser parser;
     THINKGEAR_initParser( &parser, PARSER_TYPE_PACKETS,
-            printBlinks, NULL );
+                            printBlinks, NULL );
     FILE *stream = fopen( "/dev/tty.MindSet-DevB", "r" );
 
     unsigned char streamByte;
