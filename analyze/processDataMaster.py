@@ -3,7 +3,12 @@ import subprocess
 import serial
 import processBlink
 
-s = serial.Serial(5, 115200)  # COM15/port 14/baudrate 115200
+def initserial():
+    s = serial.Serial()
+    s.port = "/dev/tty.usbserial-AH01KXWW"
+    s.baudrate = 115200
+    s.open()
+    return s
 
 def broadcast(data):
     """ Helper functions to broadcast to serial port""" 
@@ -11,6 +16,7 @@ def broadcast(data):
 
 proc = subprocess.Popen("analyze.out", shell = True, stdout = subprocess.PIPE)
 
+s = initserial()
 poor = False
 SAMPLE_LEN = 10
 direction = 'L'
