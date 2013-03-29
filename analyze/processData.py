@@ -1,7 +1,7 @@
 import time
 import subprocess
 import serial
-import processBlink
+from processBlink import processBlink
 
 def initserial():
     s = serial.Serial()
@@ -12,9 +12,9 @@ def initserial():
 
 def broadcast(data):
     """ Helper functions to broadcast to serial port""" 
-    s.write(bytes(data))
+    s.write(bytes(data, encoding = "UTF8"))
 
-proc = subprocess.Popen("analyze.out", shell = True, stdout = subprocess.PIPE)
+proc = subprocess.Popen("./analyze.out", shell = True, stdout = subprocess.PIPE)
 
 s = initserial()
 poor = False
@@ -24,29 +24,26 @@ sProcessor = processBlink(SAMPLE_LEN, 200) #signal processor
 duration = 10 #hardcoded duration
 
 while True:
-    line = proc.stdout.readline()
+    line = str(proc.stdout.readline(), encoding="UTF8")
     if line != '':
-        signal = line.split(": ")
+        signal = line.rstrip('\n').split(": ")
         if signal[0] == "POOR_SIGNAL":
             if int(signal[1]) == 200:
                 poor = True
-            else:
+            elif int(signal[1]) == 0:
                 poor = False
-            print(line)
         elif poor:
+            print(line)
             continue
-        if signal[0] == "RAW":
-            rsp = sProcessor(signal[1])
+        elif signal[0] == "RAW":
+            rsp = sProcessor(int(signal[1]))
             if (rsp == 1):
                 direction = 'R' if direction == 'L' else 'L' #toggle direction
                 broadcast(direction) #Send command through serial
-        elif signal[0] == "MEDITATION":
+        elif signal[0] == "ATTENTION":
             if int(signal[1]) > 55:
                 # move forward
                 broadcast("F")
-            else:
                 # stop
-                broadcast("S")
-            print(line)
-        else:
+                #broadcast("B")
             print(line)
