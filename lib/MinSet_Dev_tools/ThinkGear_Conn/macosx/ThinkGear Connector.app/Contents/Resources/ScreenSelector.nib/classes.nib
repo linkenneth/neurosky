@@ -1,0 +1,20 @@
+{
+    IBClasses = (
+        {CLASS = FirstResponder; LANGUAGE = ObjC; SUPERCLASS = NSObject; }, 
+        {
+            ACTIONS = {Play = id; Quit = id; SaveAndQuit = id; }; 
+            CLASS = ScreenSelector; 
+            LANGUAGE = ObjC; 
+            OUTLETS = {
+                "m_GraphicsQuality" = id; 
+                "m_Input" = id; 
+                "m_OptionKey" = id; 
+                "m_ScreenResolution" = id; 
+                "m_Windowed" = id; 
+            }; 
+            SUPERCLASS = NSObject; 
+        }, 
+        {CLASS = ScreenSelectorTableView; LANGUAGE = ObjC; SUPERCLASS = NSTableView; }
+    ); 
+    IBVersion = 1; 
+}
