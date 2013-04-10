@@ -11,6 +11,7 @@ def initserial():
     return s
 
 def broadcast(data):
+    print(data)
     """ Helper functions to broadcast to serial port""" 
     s.write(bytes(data, encoding = "UTF8"))
 
@@ -18,10 +19,9 @@ proc = subprocess.Popen("./analyze.out", shell = True, stdout = subprocess.PIPE)
 
 s = initserial()
 poor = False
-SAMPLE_LEN = 10
+SAMPLE_LEN = 80
 direction = 'L'
-sProcessor = processBlink(SAMPLE_LEN, 800) #signal processor
-duration = 10 #hardcoded duration
+sProcessor = processBlink(SAMPLE_LEN, 700) #signal processor
 
 while True:
     line = str(proc.stdout.readline(), encoding="UTF8")

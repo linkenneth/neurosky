@@ -22,7 +22,7 @@ def processBlink (accuracy, THR):
            if avg > MAX:
                MAX = avg
            accum = 0
-        if i == SSIZE * 4:
+        if i == SSIZE * 6:
            i = 1
            diff = MAX - MIN
            MAX = -9999
