@@ -2,9 +2,10 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import time
+import subprocess
 
 BUFFER_SIZE = 2**14
-buf = np.zeros([None] * BUFFER_SIZE, dtype=np.int)
+buf = np.zeros(BUFFER_SIZE, dtype=np.int)
 i = 0
 
 proc = subprocess.Popen("./analyze.out", shell = True, stdout = subprocess.PIPE)
@@ -12,10 +13,12 @@ fig = plt.figure(1)
 ax = fig.add_subplot(111)
 ax.set_xlim(-np.pi, np.pi)
 ax.set_ylim(-1000, 1000)
-line, = ax.plot(x, y, 'ko-')
+line, = ax.plot(0, 0, 'ko-')
+plt.ion()
+plt.show()
 
 while True:
-    line = str(proc.stdout.readline(), encoding="utf8")
+    line = unicode(proc.stdout.readline(), encoding="utf8")
     if line != '':
         signal = line.rstrip('\n').split(": ")
         if signal[0] == 'RAW':

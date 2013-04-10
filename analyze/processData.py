@@ -11,7 +11,6 @@ def initserial():
     return s
 
 def broadcast(data):
-    print(data)
     """ Helper functions to broadcast to serial port""" 
     s.write(bytes(data, encoding = "UTF8"))
 
@@ -28,12 +27,14 @@ while True:
     if line != '':
         signal = line.rstrip('\n').split(": ")
         if signal[0] == "POOR_SIGNAL":
-            if int(signal[1]) == 200:
+            print(signal[1])
+            if int(signal[1]) != 0:
                 poor = True
-            elif int(signal[1]) == 0:
+            else:
                 poor = False
             print(line)
-        elif poor:
+        if poor:
+            broadcast('S')
             continue
         if signal[0] == "RAW":
             rsp = sProcessor(int(signal[1]))
