@@ -14,24 +14,26 @@ def processBlink (accuracy, THR):
                           0 - need more samples doesnt know yet
                          -1 - detected no blinks"""
         nonlocal SSIZE, MIN, MAX, accum, i
+        if (i == SSIZE*4):
+           i = 0
+           diff = MAX - MIN
+           MAX = 9999
+           MIN = -1
+           if (diff > THR):
+               return 1
+           else:
+               return -1
         if ((i % SSIZE) == 0): #For grouping
            avg = accum/SSIZE
            if (avg < MIN or MIN == -1):
                MIN = avg
-           elif (avg > MAX or MAX == 9999):
+           if (avg > MAX or MAX == 9999):
                MAX = avg
            accum = 0
            i += 1
         elif (i != SSIZE*4): #SSIZE*4: total amount of samples
            accum += sample
-           return 0
            i += 1
-        elif (i == SSIZE*4):
-           i = 0
-           diff = MAX - MIN
-           if (diff > THR):
-               return 1
-           else:
-               return -1
+           return 0
 
     return process

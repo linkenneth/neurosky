@@ -20,7 +20,7 @@ s = initserial()
 poor = False
 SAMPLE_LEN = 10
 direction = 'L'
-sProcessor = processBlink(SAMPLE_LEN, 200) #signal processor
+sProcessor = processBlink(SAMPLE_LEN, 800) #signal processor
 duration = 10 #hardcoded duration
 
 while True:
@@ -32,16 +32,16 @@ while True:
                 poor = True
             elif int(signal[1]) == 0:
                 poor = False
-        elif poor:
             print(line)
+        elif poor:
             continue
-        elif signal[0] == "RAW":
+        if signal[0] == "RAW":
             rsp = sProcessor(int(signal[1]))
             if (rsp == 1):
                 direction = 'R' if direction == 'L' else 'L' #toggle direction
                 broadcast(direction) #Send command through serial
         elif signal[0] == "ATTENTION":
-            if int(signal[1]) > 55:
+            if int(signal[1]) > 150:
                 # move forward
                 broadcast("F")
                 # stop
