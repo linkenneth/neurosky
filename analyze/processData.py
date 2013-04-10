@@ -19,7 +19,7 @@ proc = subprocess.Popen("./analyze.out", shell = True, stdout = subprocess.PIPE)
 
 s = initserial()
 poor = False
-SAMPLE_LEN = 80
+SAMPLE_LEN = 60
 direction = 'L'
 sProcessor = processBlink(SAMPLE_LEN, 700) #signal processor
 
@@ -40,10 +40,10 @@ while True:
             if (rsp == 1):
                 direction = 'R' if direction == 'L' else 'L' #toggle direction
                 broadcast(direction) #Send command through serial
-        elif signal[0] == "ATTENTION":
-            if int(signal[1]) > 150:
+        elif signal[0] == "MEDITATION":
+            if int(signal[1]) > 75:
                 # move forward
-                broadcast("F")
-                # stop
-                #broadcast("B")
+                broadcast("F") #Forward
+            else:
+                broadcast("S") #Stop
             print(line)
