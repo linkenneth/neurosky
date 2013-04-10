@@ -12,8 +12,8 @@ void printBlinks( unsigned char extendedCodeLevel,
                 printf( "BLINK: %d\n", value[0] & 0xFF );
                 fflush(stdout);
                 break;
-            case ( 0x04 ):
-                printf( "ATTENTION: %d\n", value[0] & 0xFF );
+            case ( 0x05 ):
+                printf( "MEDITATION: %d\n", value[0] & 0xFF );
                 fflush(stdout);
                 break;
             case ( 0x02 ):
