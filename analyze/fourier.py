@@ -3,8 +3,9 @@ import numpy as np
 import matplotlib.pyplot as plt
 import time
 import subprocess
+from datetime import datetime
 
-BUFFER_SIZE = 256
+BUFFER_SIZE = 64
 SAMPLING_RATE = 512.0 # Hz
 DELTA_T = 1 / SAMPLING_RATE
 DELTA_F = SAMPLING_RATE / BUFFER_SIZE
@@ -27,7 +28,7 @@ def detect(freq, fft, thr):
             accum += fft[i]
     return accum > thr
 
-totstart = time.clock()
+totstart = datetime.now()
 while True:
     line = unicode(proc.stdout.readline(), encoding="utf8")
     if line != '':
@@ -38,21 +39,11 @@ while True:
             buf[i] = int(signal[1])
             i += 1
             if i % BUFFER_SIZE == 0:
-                start = time.clock()
-                sp = np.fft.fft(buf, n=250)
-                print "fft: %f" % (time.clock() - start)
+                sp = np.fft.fft(buf, n=1000)
                 freq = np.fft.fftfreq(sp.size) * SAMPLING_RATE
-                if (detect(freq, sp, 20000)):
-                  print "got blink"
-                  
-
-
-                start = time.clock()
-                #rline.set_data(freq, sp.real)
-                print "rline: %f" % (time.clock() - start)
-                start = time.clock()
-                #plt.draw()
-                print "plot: %f" % (time.clock() - start)
+                print abs(sp[0].real)
+                rline.set_data(freq, sp.real)
+                plt.draw()
                 i = 0
-                print "tot: %f" % (time.clock() - totstart)
-                totstart = time.clock()
+                #print "tot: %f" % ((datetime.now() - totstart).total_seconds())
+                totstart = datetime.now()
