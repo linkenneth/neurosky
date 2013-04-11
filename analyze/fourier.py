@@ -71,6 +71,13 @@ def rfftfreq(n, d=1.0):
     results = arange(0, N, dtype=int)
     return results * val
 
+def detect(freq, fft, thr):
+    brain_freq_indexes = []
+    for i, f in enumerate(freq):
+        if 0 < f < 10:
+            brain_freq_indexes.append(i)
+    # do stuff with fft based on indexes
+
 while True:
     line = unicode(proc.stdout.readline(), encoding="utf8")
     if line != '':
