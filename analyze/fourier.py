@@ -36,10 +36,10 @@ while True:
                 print "fft: %f" % (time.clock() - start)
                 freq = np.fft.fftfreq(sp.size) * SAMPLING_RATE
                 start = time.clock()
-                rline.set_data(freq, sp.real)
+                #rline.set_data(freq, sp.real)
                 print "rline: %f" % (time.clock() - start)
                 start = time.clock()
-                plt.draw()
+                #plt.draw()
                 print "plot: %f" % (time.clock() - start)
                 i = 0
                 print "tot: %f" % (time.clock() - totstart)
