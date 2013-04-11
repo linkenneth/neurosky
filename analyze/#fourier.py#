@@ -2,14 +2,13 @@
 import numpy as np
 import matplotlib.pyplot as plt
 import subprocess
-from datetime import datetime, timedelta
+from datetime import datetime
 
 BUFFER_SIZE = 64
 SAMPLING_RATE = 512.0 # Hz
 DELTA_T = 1 / SAMPLING_RATE
 DELTA_F = SAMPLING_RATE / BUFFER_SIZE
 THRESHOLD = 10000
-DETECT_INTERVAL = timedelta(milliseconds=500)
 buf = np.zeros(BUFFER_SIZE, dtype=np.int)
 i = 0
 
@@ -43,7 +42,7 @@ direction = 'L'
 #             accum += fft[i]
 #     return accum > thr
 
-last_detected = datetime(1997, 2, 3)
+detect = True
 while True:
     line = unicode(proc.stdout.readline(), encoding="utf8")
     if line != '':
@@ -60,9 +59,8 @@ while True:
                 plt.draw()
                 peak = sp[0].real
                 print "middle peak: %s" % peak
-                if peak > THRESHOLD:
-                    if datetime.now() - last_detected > DETECT_INTERVAL:
-                        direction = 'R' if direction == 'L' else 'L'
-                        broadcast(direction)
-                        last_detected = datetime.now()
+                if peak > THRESHOLD and detect:
+                    direction = 'R' if direction == 'L' else 'L'
+                    broadcast(direction)
+                    
                 i = 0
