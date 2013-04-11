@@ -14,7 +14,7 @@ i = 0
 proc = subprocess.Popen("./analyze.out", shell = True, stdout = subprocess.PIPE)
 fig = plt.figure(1)
 ax = fig.add_subplot(111)
-ax.set_xlim(-0.1, 0.1)
+ax.set_xlim(-0.1*SAMPLING_RATE, 0.1*SAMPLING_RATE)
 ax.set_ylim(0, 10000)
 rline, = ax.plot(0, 0)
 plt.ion()
