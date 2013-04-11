@@ -22,7 +22,7 @@ plt.show()
 
 def detect(freq, fft, thr):
     accum = 0
-    for i in len(fft):
+    for i in range(len(fft)):
         if 0 < freq[i] < 10:
             accum += fft[i]
     return accum > thr
@@ -42,6 +42,11 @@ while True:
                 sp = np.fft.fft(buf, n=250)
                 print "fft: %f" % (time.clock() - start)
                 freq = np.fft.fftfreq(sp.size) * SAMPLING_RATE
+                if (detect(freq, sp, 20000)):
+                  print "got blink"
+                  
+
+
                 start = time.clock()
                 #rline.set_data(freq, sp.real)
                 print "rline: %f" % (time.clock() - start)
