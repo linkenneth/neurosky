@@ -3,12 +3,13 @@ import numpy as np
 import matplotlib.pyplot as plt
 import subprocess
 from datetime import datetime, timedelta
+import serial
 
 BUFFER_SIZE = 64
 SAMPLING_RATE = 512.0 # Hz
 DELTA_T = 1 / SAMPLING_RATE
 DELTA_F = SAMPLING_RATE / BUFFER_SIZE
-THRESHOLD = 10000
+THRESHOLD = 8000
 DETECT_INTERVAL = timedelta(milliseconds=500)
 buf = np.zeros(BUFFER_SIZE, dtype=np.int)
 i = 0
@@ -31,7 +32,7 @@ def init_serial():
 
 def broadcast(data):
     """ Helper functions to broadcast to serial port""" 
-    s.write(bytes(data, encoding = "UTF8"))
+    s.write(bytes(data))
 
 s = init_serial()
 direction = 'L'
@@ -58,7 +59,7 @@ while True:
                 freq = np.fft.fftfreq(sp.size) * SAMPLING_RATE
                 rline.set_data(freq, sp.real)
                 plt.draw()
-                peak = sp[0].real
+                peak = max(abs(x) for x in sp[0:80].real)
                 print "middle peak: %s" % peak
                 if peak > THRESHOLD:
                     if datetime.now() - last_detected > DETECT_INTERVAL:
@@ -66,3 +67,10 @@ while True:
                         broadcast(direction)
                         last_detected = datetime.now()
                 i = 0
+        elif signal[0] == "MEDITATION":
+            if int(signal[1]) > 75:
+                # move forward
+                broadcast("F") #Forward
+            else:
+                broadcast("S") #Stop
+            print(line)
