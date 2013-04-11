@@ -4,7 +4,10 @@ import matplotlib.pyplot as plt
 import time
 import subprocess
 
-BUFFER_SIZE = 2**8
+BUFFER_SIZE = 256
+SAMPLING_RATE = 512.0 # Hz
+DELTA_T = 1 / SAMPLING_RATE
+DELTA_F = SAMPLING_RATE / BUFFER_SIZE
 buf = np.zeros(BUFFER_SIZE, dtype=np.int)
 i = 0
 
@@ -27,8 +30,8 @@ while True:
             buf[i] = int(signal[1])
             i += 1
             if i % BUFFER_SIZE == 0:
-                sp = np.fft.fft(buf, n=500)
-                freq = np.fft.fftfreq(500)
+                sp = np.fft.fft(buf, n=250)
+                freq = np.fft.fftfreq(sp.size) * SAMPLING_RATE
                 rline.set_data(freq, sp.real)
                 plt.draw()
                 i = 0
