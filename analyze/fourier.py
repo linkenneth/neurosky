@@ -9,7 +9,8 @@ BUFFER_SIZE = 64
 SAMPLING_RATE = 512.0 # Hz
 DELTA_T = 1 / SAMPLING_RATE
 DELTA_F = SAMPLING_RATE / BUFFER_SIZE
-THRESHOLD = 8000
+TURN_THRESHOLD = 8000
+GO_THRESHOLD = 60
 DETECT_INTERVAL = timedelta(milliseconds=500)
 buf = np.zeros(BUFFER_SIZE, dtype=np.int)
 i = 0
@@ -36,21 +37,19 @@ def broadcast(data):
 
 s = init_serial()
 direction = 'L'
+poor = False
 
-# def detect(freq, fft, thr):
-#     accum = 0
-#     for i in range(len(fft)):
-#         if 0 < freq[i] < 10:
-#             accum += fft[i]
-#     return accum > thr
-
-last_detected = datetime(1997, 2, 3)
+last_detected = datetime(1992, 12, 13)
 while True:
     line = unicode(proc.stdout.readline(), encoding="utf8")
     if line != '':
         signal = line.rstrip('\n').split(": ")
         if signal[0] == 'POOR_SIGNAL':
-            print line
+            print line.rstrip('\n')
+            poor = int(signal[1]) > 0
+        if poor:
+            print "Not detecting blinks due to poor signal..."
+            continue
         if signal[0] == 'RAW':
             buf[i] = int(signal[1])
             i += 1
@@ -59,18 +58,17 @@ while True:
                 freq = np.fft.fftfreq(sp.size) * SAMPLING_RATE
                 rline.set_data(freq, sp.real)
                 plt.draw()
-                peak = max(abs(x) for x in sp[0:80].real)
+                peak = max(abs(x) for x in sp[:80].real)
                 print "middle peak: %s" % peak
-                if peak > THRESHOLD:
+                if peak > TURN_THRESHOLD:
                     if datetime.now() - last_detected > DETECT_INTERVAL:
                         direction = 'R' if direction == 'L' else 'L'
                         broadcast(direction)
                         last_detected = datetime.now()
                 i = 0
         elif signal[0] == "MEDITATION":
-            if int(signal[1]) > 75:
-                # move forward
-                broadcast("F") #Forward
+            if int(signal[1]) > GO_THRESHOLD:
+                broadcast("F")  # Forward
             else:
-                broadcast("S") #Stop
-            print(line)
+                broadcast("S")  # Stop
+            print line
